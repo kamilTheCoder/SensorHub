@@ -2,7 +2,6 @@ package connection
 
 import (
 	"SensorHub/hub/dataReading"
-	"SensorHub/hub/processing"
 	"bufio"
 	"io"
 	"log"
@@ -53,6 +52,6 @@ func handle(conn net.Conn) {
 			continue
 		}
 
-		processing.Save(reading)
+		dataReading.Save(reading)
 	}
 }
