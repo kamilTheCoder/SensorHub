@@ -53,6 +53,6 @@ func handle(conn net.Conn) {
 			continue
 		}
 
-		processing.SaveDataReading(reading)
+		processing.Save(reading)
 	}
 }

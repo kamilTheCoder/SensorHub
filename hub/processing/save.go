@@ -2,6 +2,6 @@ package processing
 
 import "SensorHub/hub/dataReading"
 
-func SaveDataReading(data dataReading.DataReading) {
+func Save(data dataReading.DataReading) {
 
 }
