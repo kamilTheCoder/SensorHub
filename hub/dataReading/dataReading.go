@@ -6,17 +6,17 @@ import (
 )
 
 func Handle(reading string) {
-	var r Reading
+	var r DataReading
 	err := json.Unmarshal([]byte(reading), &r)
 	if err != nil {
 		log.Println("Problem unmarshalling message '"+reading+"': ", err.Error())
 		return
 	}
 
-	log.Println(r)
+	log.Println(r.StationID + "\t" + r.SensorType + "\t" + r.Payload + "\t" + r.Err)
 }
 
-type Reading struct {
+type DataReading struct {
 	StationID  string
 	Timestamp  string
 	SensorType string

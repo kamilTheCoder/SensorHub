@@ -18,6 +18,6 @@ func TestHandleUnmarshallsCorrectJson(t *testing.T) {
 	Handle(string(data))
 }
 
-func createTestReading() Reading {
-	return Reading{"test", "20180121225932", "temperature", "20.5", ""}
+func createTestReading() DataReading {
+	return DataReading{"test", "20180121225932", "temperature", "20.5", ""}
 }
