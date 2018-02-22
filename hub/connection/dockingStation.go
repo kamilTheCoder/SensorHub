@@ -47,7 +47,7 @@ func handle(conn net.Conn) {
 		}
 
 		msg = strings.TrimSpace(msg)
-		go dataReading.Handle(msg)
+		go dataReading.Parse(msg)
 		log.Println("Message from", conn.RemoteAddr().String(), "'"+msg+"' passed to the data reading handler...")
 
 	}
