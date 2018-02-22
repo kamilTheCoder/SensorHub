@@ -16,11 +16,3 @@ func Parse(reading string) (DataReading, error) {
 	log.Println(r.StationID + "\t" + r.SensorType + "\t" + r.Payload + "\t" + r.Err)
 	return r, err
 }
-
-type DataReading struct {
-	StationID  string
-	Timestamp  string
-	SensorType string
-	Payload    string
-	Err        string
-}
