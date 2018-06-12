@@ -19,8 +19,18 @@ class Sensor:
     def echo(self, msg):
         print(msg)
 
+    def read(self):
+        return None
+
+class TempSensor(Sensor):
+    def read(self):
+        return 8
+
 def main():
     s = Sensor()
-    s.echo("hi")
+    print(s.read())
+
+    ts = TempSensor()
+    print(ts.read())
 
 main()
