@@ -1,36 +1,25 @@
-import socket
+from station import Station
+import json
 
-class Sensor:
-    def __init__(self, ip = "127.0.0.1", port = 1984, bufferSize = 1024):
-        self.ip = ip
-        self.port = port
-        self.bufferSize = bufferSize
-
-    def sendData(self, message):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.ip, self.port))
-        s.send(message.encode())
-
-        response = s.recv(self.bufferSize)
-        s.close()
-        
-        return response
-
-    def echo(self, msg):
-        print(msg)
-
-    def read(self):
-        return None
-
-class TempSensor(Sensor):
-    def read(self):
-        return 8
 
 def main():
-    s = Sensor()
-    print(s.read())
+    ip, port, buffSize = loadConfig()
+    
+    s = Station(ip, port, buffSize)
+    s.echo("hi")
 
-    ts = TempSensor()
-    print(ts.read())
+    # ts = TempSensor()
+    # print(ts.read())
 
-main()
+def loadConfig():
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+
+    ip = config['station']['ip']
+    port = config['station']['port']
+    buffSize = config['station']['buffSize']
+
+    return ip, port, buffSize
+
+if __name__ == '__main__':
+    main()
