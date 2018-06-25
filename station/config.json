@@ -1,0 +1,13 @@
+{
+    "station": {
+        "ip": "",
+        "port": 0,
+        "buffSize": 0
+    },
+    "sensors": [
+        {
+            "name": "",
+            "pin": 0
+        }
+    ]
+}
