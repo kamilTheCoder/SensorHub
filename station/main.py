@@ -12,13 +12,9 @@ def main():
     # ts = TempSensor()
     # print(ts.read())
 
-    
+
 def printConfig(ip, port, buffSize):
-    print("""Configuration:
-    ip:\t\t{}
-    port:\t{}
-    buffSize:\t{}
-    """.format(ip, port, buffSize))
+    print("configuration:\nip:\t\t{}\nport:\t\t{}\nbuffSize:\t{}".format(ip, port, buffSize))
 
 
 def loadConfig():
