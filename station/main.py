@@ -1,10 +1,8 @@
-import station.station as station
-
+from station import Station
 
 def main():
-    s = station.Station()
+    s = Station()
     s.printConfig()
-
 
 if __name__ == '__main__':
     main()
