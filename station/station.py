@@ -1,10 +1,13 @@
 import socket
+import json
 
 class Station:
-    def __init__(self, ip = "127.0.0.1", port = 1984, bufferSize = 1024):
-        self.ip = ip
-        self.port = port
-        self.bufferSize = bufferSize
+    def __init__(self):
+        self.ip = "127.0.0.1"
+        self.port = 1984
+        self.bufferSize = 1024
+
+        self.ip, self.port, self.bufferSize = self.loadConfig()
 
     def sendData(self, message):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,3 +21,17 @@ class Station:
 
     def echo(self, msg):
         print(msg)
+
+    def loadConfig(self):
+        with open('config.json', 'r') as f:
+            config = json.load(f)
+
+        ip = config['station']['ip']
+        port = config['station']['port']
+        buffSize = config['station']['buffSize']
+
+        return ip, port, buffSize
+
+    def printConfig(self):
+        print("configuration:\nip:\t\t{}\nport:\t\t{}\nbuffSize:\t{}".format(self.ip, self.port, self.bufferSize))
+
