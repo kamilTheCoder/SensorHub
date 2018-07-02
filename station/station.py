@@ -1,3 +1,5 @@
+import RPi.GPIO as GPIO
+import sensor.sensor as sensor
 import socket
 import json
 
@@ -8,6 +10,8 @@ class Station:
         self.bufferSize = 1024
 
         self.ip, self.port, self.bufferSize = self.loadConfig()
+
+        self.initGpio()
 
     def sendData(self, message):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,3 +39,11 @@ class Station:
     def printConfig(self):
         print("configuration:\nip:\t\t{}\nport:\t\t{}\nbuffSize:\t{}".format(self.ip, self.port, self.bufferSize))
 
+    def initGpio(self):
+        print("Initialising GPIO...")
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.cleanup()
+
+    def initDht11(self, gpio):
+        self.dht11 = sensor.TempSensor(gpio)

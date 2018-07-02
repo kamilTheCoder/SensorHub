@@ -14,6 +14,7 @@ class TempSensor(Sensor):
 
     def __init__(self, gpio):
         super().__init__(self, gpio)
+        print("Instanciating DHT11...")
         self.instance = dht11.DHT11(pin=self.gpio)
 
     def read(self):
