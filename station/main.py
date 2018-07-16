@@ -10,7 +10,7 @@ def main():
     maxRetries = 10
     print("Attempting to read...")
     while retries < 10:        
-        result = s.readSensor(0)
+        result = s.readDht11()
 
         if result != None and result.is_valid():
             retries = 0
