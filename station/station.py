@@ -80,4 +80,17 @@ class Station:
             return None
 
         return self.sensors[i].read()
+
+    def readAllSensors(self):
+        reads = []
+        for s in self.sensors:
+            reads.append(s.read())
+
+        return reads
+
+
+    def readDth11(self):
+        for s in self.sensors:
+            if isinstance(s, Dht11Sensor):
+                return s.read()
     
