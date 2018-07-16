@@ -69,11 +69,15 @@ class Station:
                 print("\tFound DHT11 at pin {}".format(sensorConf[1]))
                 result.append(Dht11Sensor(sensorConf[1]))
             else:
-                print("\tWarning: Unknown sensor {}".format( sensorConf[0]))
+                print("\WARNING: Unknown sensor {}".format( sensorConf[0]))
 
         return result
 
 
     def readSensor(self,i):
+        if len(self.sensors) < i+1:
+            print("WARNING: Trying to access sensor #{}, which does not exist".format(i))
+            return None
+
         return self.sensors[i].read()
     
