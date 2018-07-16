@@ -89,7 +89,7 @@ class Station:
         return reads
 
 
-    def readDth11(self):
+    def readDht11(self):
         for s in self.sensors:
             if isinstance(s, Dht11Sensor):
                 return s.read()
