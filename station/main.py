@@ -20,7 +20,7 @@ def main():
         else:
             retries += 1
         
-        time.sleep(1)
+        time.sleep(5)
     print("Finished reading after 10 failed retries")
 
 
