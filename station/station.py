@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from sensor import TempSensor
+from sensor import Dht11Sensor
 import socket
 import json
 
@@ -12,9 +12,9 @@ class Station:
         self.port = 1984
         self.bufferSize = 1024
 
-        self.ip, self.port, self.bufferSize, self.sensors = self.loadConfig()
-        
-        self.initGpio()
+        self.ip, self.port, self.bufferSize, sensorList = self.__loadConfig()
+        self.sensors = self.__initSensors(sensorList)        
+        self.__initGpio()
 
     def sendData(self, message):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -27,7 +27,7 @@ class Station:
         return response
 
 
-    def loadConfig(self):
+    def __loadConfig(self):
         print("Loading configuration...")
         with open('config.json', 'r') as f:
             config = json.load(f)
@@ -51,23 +51,29 @@ class Station:
         print("\tbuffSize:\t{}".format(self.bufferSize))
         print("sensors:")
         for s in self.sensors:
-            print("\tname: {}\tpin: {}".format(s[0], s[1]))
+            print("\tname: {}\tpin: {}".format(s.name, s.gpio))
 
-    def initGpio(self):
+
+    def __initGpio(self):
         print("Initialising GPIO...")
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.cleanup()
 
-    def initDht11(self):    
-        print("Initialising DHT11...") 
-        self.dht11 = TempSensor(self.sensors[0][1])
 
-    def readDht11(self):
-        if self.dht11 is None:
-            print("Warning: no DHT11 found")
-            return
-        
-        #print("Reading DHT11...")  
-        return self.dht11.read()
+    def __initSensors(self, sensors): 
+        print("Initialising sensor list")
+        result = []
+        for sensorConf in sensors:
+            if sensorConf[0] == 'DHT11': 
+                print("\tFound DHT11 at pin {}".format(sensorConf[1]))
+                result.append(Dht11Sensor(sensorConf[1]))
+            else:
+                print("\tWarning: Unknown sensor {}".format( sensorConf[0]))
+
+        return result
+
+
+    def readSensor(self,i):
+        return self.sensors[i].read()
     
