@@ -15,9 +15,9 @@ def main():
 
         if result != None and result.is_valid():
             i = 0
-            print("Last valid input: " + str(datetime.datetime.now()))
-            print("Temperature: %d C" % result.temperature)
-            print("Humidity: %d %%" % result.humidity)
+            print("Data read @ " + str(datetime.datetime.now()))
+            print("\tTemperature: %d C" % result.temperature)
+            print("\tHumidity: %d %%" % result.humidity)
         else:
             #print("Read failed. Attempts left: {}".format(10-i))
             i += 1

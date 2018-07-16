@@ -26,8 +26,6 @@ class Station:
         
         return response
 
-    def echo(self, msg):
-        print(msg)
 
     def loadConfig(self):
         print("Loading configuration...")
@@ -71,8 +69,5 @@ class Station:
             return
         
         #print("Reading DHT11...")  
-        read = self.dht11.read()
-        print(read)
-        return read
-
-
+        return self.dht11.read()
+    
