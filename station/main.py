@@ -5,26 +5,23 @@ import time
 def main():
     s = Station()
     s.printConfig()
-    s.initDht11()
-    #result = s.readDht11()
 
-    i = 0
+    retries = 0
+    maxRetries = 10
     print("Attempting to read...")
-    while i < 10:        
-        result = s.readDht11()
+    while retries < 10:        
+        result = s.readSensor(0)
 
         if result != None and result.is_valid():
-            i = 0
+            retries = 0
             print("Data read @ " + str(datetime.datetime.now()))
             print("\tTemperature: %d C" % result.temperature)
             print("\tHumidity: %d %%" % result.humidity)
         else:
-            #print("Read failed. Attempts left: {}".format(10-i))
-            i += 1
+            retries += 1
         
         time.sleep(1)
-    print("Finished reading after 10 failed attempts.")
-
+    print("Finished reading after 10 failed retries")
 
 
 if __name__ == '__main__':
