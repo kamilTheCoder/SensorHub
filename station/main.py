@@ -9,20 +9,21 @@ def main():
     #result = s.readDht11()
 
     i = 0
-    while i < 10:
-        print("Attempting to read...")
+    print("Attempting to read...")
+    while i < 10:        
         result = s.readDht11()
-        
+
         if result != None and result.is_valid():
             i = 0
             print("Last valid input: " + str(datetime.datetime.now()))
             print("Temperature: %d C" % result.temperature)
             print("Humidity: %d %%" % result.humidity)
         else:
-            print("Read failed. Attempts left: {}".format(10-i))
+            #print("Read failed. Attempts left: {}".format(10-i))
             i += 1
-
+        
         time.sleep(1)
+    print("Finished reading after 10 failed attempts.")
 
 
 
