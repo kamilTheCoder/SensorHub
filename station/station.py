@@ -13,14 +13,8 @@ class Station:
     __dbName = "readings"
     __dbTableName = "data"
 
-    dht11 = None
-
     def __init__(self):
-        self.ip = "127.0.0.1"
-        self.port = 1984
-        self.bufferSize = 1024
-
-        self.ip, self.port, self.bufferSize, sensorList = self.__loadConfig()
+        sensorList = self.__loadConfig()
         self.sensors = self.__initSensors(sensorList)        
         self.__initGpio()
 
@@ -35,8 +29,6 @@ class Station:
             database=self.__dbName
             )
         cursor = db.cursor()
-
-        #CREATE TABLE data (tdate DATE, ttime TIME, sensor TEXT, temp NUMERIC, humidity NUMERIC)
 
         query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbTableName)
         val = (
@@ -59,17 +51,13 @@ class Station:
         with open('config.json', 'r') as f:
             config = json.load(f)
 
-        ip = config['station']['ip']
-        port = config['station']['port']
-        buffSize = config['station']['buffSize']
-
         sensors = []
         for sensor in config['sensors']:
             name = sensor['name']
             pin = sensor['pin']
             sensors.append((name, pin))
 
-        return ip, port, buffSize, sensors
+        return sensors
 
 
     def printConfig(self):
