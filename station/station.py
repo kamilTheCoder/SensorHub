@@ -49,7 +49,8 @@ class Station:
 
         cursor.execute(query, val)
         db.commit()
-        print("Reading inserted at ID:", cursor.lastrowid)
+        
+        return cursor.lastrowid, val
 
 
 
@@ -128,21 +129,17 @@ class Station:
         maxRetries = 10
         result = None
         now = None
-        print("Attempting to read...")
         while retries < maxRetries:        
             result = self.readDht11()
             now = datetime.datetime.now()
 
             if result != None and result.is_valid():  
-                print("Data read @ " + str(now))
-                print("\tTemperature: %d C" % result.temperature)
-                print("\tHumidity: %d %%" % result.humidity)
                 break
             
             retries += 1
 
         if retries == maxRetries:
-            print("Finished reading after {} failed retries".format(retries))
+            print("Error: Finished reading after {} failed retries".format(retries))
             return now, None, None
 
         return now, result.temperature, result.humidity
