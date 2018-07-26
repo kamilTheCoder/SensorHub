@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import dht11
+import DHT11_Python_master.dht11 as dht11
 
 class Sensor:
     def __init__(self, gpio, name):
