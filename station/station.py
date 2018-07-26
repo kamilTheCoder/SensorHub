@@ -2,8 +2,16 @@ import RPi.GPIO as GPIO
 import sensor.sensor as sensors
 import socket
 import json
+import mysql.connector
+import datetime
+import time
 
 class Station:
+    __dbUser = "station"
+    __dbPass = "password"
+    __dbHost = "localhost"
+    __dbName = "readings"
+    __dbTableName = "data"
 
     dht11 = None
 
@@ -16,15 +24,33 @@ class Station:
         self.sensors = self.__initSensors(sensorList)        
         self.__initGpio()
 
-    def sendData(self, message):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.ip, self.port))
-        s.send(message.encode())
 
-        response = s.recv(self.bufferSize)
-        s.close()
-        
-        return response
+    def registerReading(self):
+        time, temp, hum = self.tryRead()
+
+        db = mysql.connector.connect(
+            host=self.__dbHost,
+            user=self.__dbUser,
+            passwd=self.__dbPass,
+            database=self.__dbName
+            )
+        cursor = db.cursor()
+
+        #CREATE TABLE data (tdate DATE, ttime TIME, sensor TEXT, temp NUMERIC, humidity NUMERIC)
+
+        query = "INSERT INTO data (tdate DATE, ttime TIME, sensor TEXT, temp NUMERIC, humidity NUMERIC) VALUES (%s, %s, %s, %s, %s)"
+        val = (
+            "{}-{}-{}".format(time.year, time.month, time.day),
+            "{}:{}:{}".format(time.hour, time.minute, time.second),
+            "main",
+            temp,
+            hum
+        )
+
+        cursor.execute(query, val)
+        db.commit()
+        print("Reading inserted at ID:", cursor.lastrowid)
+
 
 
     def __loadConfig(self):
@@ -43,6 +69,7 @@ class Station:
             sensors.append((name, pin))
 
         return ip, port, buffSize, sensors
+
 
     def printConfig(self):
         print("configuration:")
@@ -81,6 +108,7 @@ class Station:
 
         return self.sensors[i].read()
 
+
     def readAllSensors(self):
         reads = []
         for s in self.sensors:
@@ -94,3 +122,28 @@ class Station:
             if isinstance(s, sensors.Dht11Sensor):
                 return s.read()
     
+
+    def tryRead(self):
+        retries = 0
+        maxRetries = 10
+        result = None
+        now = None
+        print("Attempting to read...")
+        while retries < maxRetries:        
+            result = self.readDht11()
+            now = datetime.datetime.now()
+
+            if result == None or not result.is_valid():
+                retries += 1
+                continue
+    
+            print("Data read @ " + str(now))
+            print("\tTemperature: %d C" % result.temperature)
+            print("\tHumidity: %d %%" % result.humidity)
+
+        if retries == maxRetries:
+            print("Finished reading after {} failed retries".format(retries))
+            return now, None, None
+
+        return now, result.temperature, result.humidity
+
