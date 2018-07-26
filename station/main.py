@@ -1,9 +1,9 @@
-from station import Station
+import station
 import datetime
 import time
 
 def main():
-    s = Station()
+    s = station.Station()
     s.printConfig()
 
     retries = 0

@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from sensor import Dht11Sensor
+import sensor.sensor as sensors
 import socket
 import json
 
@@ -67,7 +67,7 @@ class Station:
         for sensorConf in sensors:
             if sensorConf[0] == 'DHT11': 
                 print("\tFound DHT11 at pin {}".format(sensorConf[1]))
-                result.append(Dht11Sensor(sensorConf[1]))
+                result.append(sensors.Dht11Sensor(sensorConf[1]))
             else:
                 print("\WARNING: Unknown sensor {}".format( sensorConf[0]))
 
@@ -91,6 +91,6 @@ class Station:
 
     def readDht11(self):
         for s in self.sensors:
-            if isinstance(s, Dht11Sensor):
+            if isinstance(s, sensors.Dht11Sensor):
                 return s.read()
     
