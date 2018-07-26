@@ -62,9 +62,6 @@ class Station:
 
     def printConfig(self):
         print("configuration:")
-        print("\tip:\t\t{}".format(self.ip))
-        print("\tport:\t\t{}".format(self.port))
-        print("\tbuffSize:\t{}".format(self.bufferSize))
         print("sensors:")
         for s in self.sensors:
             print("\tname: {}\tpin: {}".format(s.name, s.gpio))
