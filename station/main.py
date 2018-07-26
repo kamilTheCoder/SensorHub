@@ -5,6 +5,7 @@ import time
 def main():
     s = station.Station()
     s.printConfig()
+    readInterval = 60 # seconds
 
     print("Attempting to read...")
     while True:        
@@ -14,7 +15,7 @@ def main():
             id, result[0], result[1], result[3], result[4]
         ))
 
-        time.sleep(10)
+        time.sleep(readInterval)
 
 
 if __name__ == '__main__':
