@@ -61,10 +61,10 @@ class Station:
         GPIO.cleanup()
 
 
-    def __initSensors(self, sensors): 
+    def __initSensors(self, sensorList): 
         print("Initialising sensor list")
         result = []
-        for sensorConf in sensors:
+        for sensorConf in sensorList:
             if sensorConf[0] == 'DHT11': 
                 print("\tFound DHT11 at pin {}".format(sensorConf[1]))
                 result.append(sensors.Dht11Sensor(sensorConf[1]))
