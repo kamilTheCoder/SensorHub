@@ -133,13 +133,13 @@ class Station:
             result = self.readDht11()
             now = datetime.datetime.now()
 
-            if result == None or not result.is_valid():
-                retries += 1
-                continue
-    
-            print("Data read @ " + str(now))
-            print("\tTemperature: %d C" % result.temperature)
-            print("\tHumidity: %d %%" % result.humidity)
+            if result != None and result.is_valid():  
+                print("Data read @ " + str(now))
+                print("\tTemperature: %d C" % result.temperature)
+                print("\tHumidity: %d %%" % result.humidity)
+                break
+            
+            retries += 1
 
         if retries == maxRetries:
             print("Finished reading after {} failed retries".format(retries))
