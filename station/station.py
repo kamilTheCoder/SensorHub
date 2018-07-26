@@ -38,10 +38,10 @@ class Station:
 
         #CREATE TABLE data (tdate DATE, ttime TIME, sensor TEXT, temp NUMERIC, humidity NUMERIC)
 
-        query = "INSERT INTO data (tdate DATE, ttime TIME, sensor TEXT, temp NUMERIC, humidity NUMERIC) VALUES (%s, %s, %s, %s, %s)"
+        query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbTableName)
         val = (
-            "{}-{}-{}".format(time.year, time.month, time.day),
-            "{}:{}:{}".format(time.hour, time.minute, time.second),
+            "'{}-{}-{}'".format(time.year, time.month, time.day),
+            "'{}:{}:{}'".format(time.hour, time.minute, time.second),
             "main",
             temp,
             hum
