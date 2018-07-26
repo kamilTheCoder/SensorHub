@@ -6,24 +6,15 @@ def main():
     s = station.Station()
     s.printConfig()
 
-    s.registerReading()
+    print("Attempting to read...")
+    while True:        
+        id, result = s.registerReading()
 
-    # retries = 0
-    # maxRetries = 10
-    # print("Attempting to read...")
-    # while retries < maxRetries:        
-    #     result = s.readDht11()
+        print("\tId: {}\tTimestamp: {} {}\tTemperature: {}C\tHumidity: {}%".format(
+            id, result[0], result[1], result[3], result[4]
+        ))
 
-    #     if result != None and result.is_valid():
-    #         retries = 0
-    #         print("Data read @ " + str(datetime.datetime.now()))
-    #         print("\tTemperature: %d C" % result.temperature)
-    #         print("\tHumidity: %d %%" % result.humidity)
-    #     else:
-    #         retries += 1
-        
-    #     time.sleep(5)
-    # print("Finished reading after 10 failed retries")
+        time.sleep(10)
 
 
 if __name__ == '__main__':
