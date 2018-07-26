@@ -9,7 +9,7 @@ def main():
     retries = 0
     maxRetries = 10
     print("Attempting to read...")
-    while retries < 10:        
+    while retries < maxRetries:        
         result = s.readDht11()
 
         if result != None and result.is_valid():
