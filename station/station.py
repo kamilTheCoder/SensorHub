@@ -10,9 +10,10 @@ class Station:
     __dbConfig = None
     __DHT11 = None
     __sensors = []
+    __readInterval = None
 
     def __init__(self):
-        self.__dbConfig, sensorList = self.__loadConfig()
+        self.__dbConfig, self.__readInterval, sensorList = self.__loadConfig()
         self.__sensors = self.__initSensors(sensorList)        
         self.__initGpio()
 
@@ -58,8 +59,9 @@ class Station:
         dbUSer = config['database']['user']
         dbHost = config['database']['host']
         dbTable = config['database']['table']
-
         dbConfig = DbConfig(dbName, dbUSer, dbHost, dbTable)
+
+        readInterval = config['station']['readInterval']
 
         sensors = []
         for sensor in config['sensors']:
@@ -67,7 +69,7 @@ class Station:
             pin = sensor['pin']
             sensors.append((name, pin))
 
-        return dbConfig, sensors
+        return dbConfig, readInterval, sensors
 
 
     def __readSensor(self,i):
@@ -139,7 +141,6 @@ class Station:
 
 
     def initReadings(self):
-        readInterval = 60 # seconds
         repeatLimit = 10
         repeat = 0
 
@@ -157,6 +158,6 @@ class Station:
                 result[0], result[1], result[3], result[4]
             ))
 
-            time.sleep(readInterval)
+            time.sleep(self.__readInterval)
 
         print("\tERROR: stopped reading after {} failed attempts".format(repeatLimit))

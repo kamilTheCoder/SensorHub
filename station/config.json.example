@@ -1,7 +1,8 @@
 {
     "station": {
         "ip": "",
-        "name": ""
+        "name": "",
+        "readInterval": 0
     },
     "database": {
         "name": "",
