@@ -1,6 +1,5 @@
 import RPi.GPIO as GPIO
 import sensor.sensor as sensors
-import socket
 import json
 import mysql.connector
 import datetime
@@ -31,17 +30,20 @@ class Station:
         cursor = db.cursor()
 
         query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbTableName)
-        val = (
-            "{0}-{1:02d}-{2:02d}".format(time.year, time.month, time.day),
-            "{0:02d}:{1:02d}:{2:02d}".format(time.hour, time.minute, time.second),
-            "main",
-            temp,
-            hum
-        )
+        val = self.__formatReadings(time, temp, hum)
 
         cursor.execute(query, val)
         db.commit()        
         return val
+
+
+    def __formatReadings(self, time, temp, hum):
+        return ("{0}-{1:02d}-{2:02d}".format(time.year, time.month, time.day),
+                "{0:02d}:{1:02d}:{2:02d}".format(time.hour, time.minute, time.second),
+                "main",
+                temp,
+                hum
+            )
 
 
     def __loadConfig(self):
