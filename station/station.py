@@ -6,6 +6,9 @@ import datetime
 import time
 
 class Station:
+    __dbConfig = None
+    __DHT11 = None
+    __sensors = []
 
     def __init__(self):
         self.__dbConfig, sensorList = self.__loadConfig()
@@ -22,13 +25,16 @@ class Station:
 
     def __initSensors(self, sensorList): 
         print("Initialising sensor list")
+        i = 0
         result = []
         for sensorConf in sensorList:
             if sensorConf[0] == 'DHT11': 
                 print("\tFound DHT11 at pin {}".format(sensorConf[1]))
                 result.append(sensors.Dht11Sensor(sensorConf[1]))
+                self.__DHT11 = i
             else:
                 print("\WARNING: Unknown sensor {}".format( sensorConf[0]))
+            i += 1
 
         return result
 
@@ -64,7 +70,7 @@ class Station:
 
 
     def registerReading(self):
-        time, temp, hum = self.tryRead()
+        time, temp, hum = self.__tryRead()
         if time is None or temp is None or hum is None:
             # invalid reading - skip
             return None
@@ -114,7 +120,7 @@ class Station:
                 return s.read()
     
 
-    def tryRead(self):
+    def __tryRead(self):
         retries = 0
         maxRetries = 10
         result = None
