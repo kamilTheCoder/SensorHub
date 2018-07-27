@@ -115,9 +115,7 @@ class Station:
 
 
     def readDht11(self):
-        for s in self.__sensors:
-            if isinstance(s, sensors.Dht11Sensor):
-                return s.read()
+        return self.__sensors[self.__DHT11].read()
     
 
     def __tryRead(self):
