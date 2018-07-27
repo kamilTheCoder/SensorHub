@@ -1,4 +1,7 @@
 # SensorHub
 
 Requirements:
-* Requires DHT11 library
+* Required Python 3 libraries:
+    * DHT11 library
+    * MySql Connector
+
