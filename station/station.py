@@ -6,14 +6,9 @@ import datetime
 import time
 
 class Station:
-    __dbUser = "station"
-    __dbPass = "password"
-    __dbHost = "localhost"
-    __dbName = "readings"
-    __dbTableName = "data"
 
     def __init__(self):
-        sensorList = self.__loadConfig()
+        self.__dbConfig, sensorList = self.__loadConfig()
         self.__sensors = self.__initSensors(sensorList)        
         self.__initGpio()
 
@@ -22,14 +17,14 @@ class Station:
         time, temp, hum = self.tryRead()
 
         db = mysql.connector.connect(
-            host=self.__dbHost,
-            user=self.__dbUser,
-            passwd=self.__dbPass,
-            database=self.__dbName
+            host=self.__dbConfig.getDbHost(),
+            user=self.__dbConfig.getDbUser(),
+            passwd=self.__dbConfig.getDbPass(),
+            database=self.__dbConfig.getDbTable()
             )
         cursor = db.cursor()
 
-        query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbTableName)
+        query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbConfig.getDbTable())
         val = self.__formatReadings(time, temp, hum)
 
         cursor.execute(query, val)
@@ -50,7 +45,13 @@ class Station:
         print("Loading configuration...")
         with open('config.json', 'r') as f:
             config = json.load(f)
+        
+        dbName = config['database']['name']
+        dbUSer = config['database']['user']
+        dbHost = config['database']['host']
+        dbTable = config['database']['table']
 
+        dbConfig = __DbConfig(dbName, dbUSer, dbHost, dbTable)
 
         sensors = []
         for sensor in config['sensors']:
@@ -58,7 +59,7 @@ class Station:
             pin = sensor['pin']
             sensors.append((name, pin))
 
-        return sensors
+        return dbConfig, sensors
 
 
     def printConfig(self):
