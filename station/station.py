@@ -13,26 +13,24 @@ class Station:
         self.__initGpio()
 
 
-    def registerReading(self):
-        time, temp, hum = self.tryRead()
-        if time is None or temp is None or hum is None:
-            # invalid reading - skip
-            return None
+    def __initGpio(self):
+        print("Initialising GPIO...")
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.cleanup()
 
-        db = mysql.connector.connect(
-            host=self.__dbConfig.getDbHost(),
-            user=self.__dbConfig.getDbUser(),
-            passwd=self.__dbConfig.getDbPass(),
-            database=self.__dbConfig.getDbTable()
-            )
-        cursor = db.cursor()
 
-        query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbConfig.getDbTable())
-        val = self.__formatReadings(time, temp, hum)
+    def __initSensors(self, sensorList): 
+        print("Initialising sensor list")
+        result = []
+        for sensorConf in sensorList:
+            if sensorConf[0] == 'DHT11': 
+                print("\tFound DHT11 at pin {}".format(sensorConf[1]))
+                result.append(sensors.Dht11Sensor(sensorConf[1]))
+            else:
+                print("\WARNING: Unknown sensor {}".format( sensorConf[0]))
 
-        cursor.execute(query, val)
-        db.commit()        
-        return val
+        return result
 
 
     def __formatReadings(self, time, temp, hum):
@@ -65,31 +63,33 @@ class Station:
         return dbConfig, sensors
 
 
+    def registerReading(self):
+        time, temp, hum = self.tryRead()
+        if time is None or temp is None or hum is None:
+            # invalid reading - skip
+            return None
+
+        db = mysql.connector.connect(
+            host=self.__dbConfig.getDbHost(),
+            user=self.__dbConfig.getDbUser(),
+            passwd=self.__dbConfig.getDbPass(),
+            database=self.__dbConfig.getDbTable()
+            )
+        cursor = db.cursor()
+
+        query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbConfig.getDbTable())
+        val = self.__formatReadings(time, temp, hum)
+
+        cursor.execute(query, val)
+        db.commit()        
+        return val
+
+
     def printConfig(self):
         print("configuration:")
         print("sensors:")
         for s in self.__sensors:
             print("\tname: {}\tpin: {}".format(s.name, s.gpio))
-
-
-    def __initGpio(self):
-        print("Initialising GPIO...")
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)
-        GPIO.cleanup()
-
-
-    def __initSensors(self, sensorList): 
-        print("Initialising sensor list")
-        result = []
-        for sensorConf in sensorList:
-            if sensorConf[0] == 'DHT11': 
-                print("\tFound DHT11 at pin {}".format(sensorConf[1]))
-                result.append(sensors.Dht11Sensor(sensorConf[1]))
-            else:
-                print("\WARNING: Unknown sensor {}".format( sensorConf[0]))
-
-        return result
 
 
     def readSensor(self,i):
