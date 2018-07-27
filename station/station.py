@@ -87,7 +87,7 @@ class Station:
 
     def registerReading(self):
         time, reading = self.tryRead(self.__DHT11)
-        temp, hum = reading[0], reading[1]
+        temp, hum = reading.temperature, reading.humidity
 
         if time is None or temp is None or hum is None:
             # invalid reading - skip
@@ -135,7 +135,7 @@ class Station:
             print("Error: Finished reading after {} failed retries".format(retries))
             return now, None, None
 
-        return now, result.temperature, result.humidity
+        return now, result
 
 
     def initReadings(self):
