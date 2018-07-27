@@ -32,9 +32,9 @@ class Station:
                 print("\tFound DHT11 at pin {}".format(sensorConf[1]))
                 result.append(sensors.Dht11Sensor(sensorConf[1]))
                 self.__DHT11 = i
+                i += 1
             else:
-                print("\WARNING: Unknown sensor {}".format( sensorConf[0]))
-            i += 1
+                print("\tWARNING: Unknown sensor {}".format( sensorConf[0]))
 
         return result
 
