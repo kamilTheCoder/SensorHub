@@ -1,13 +1,18 @@
 {
     "station": {
-        "ip": "0.0.0.0",
-        "port": 0,
-        "buffSize": 1024
+        "ip": "",
+        "name": ""
+    },
+    "database": {
+        "name": "",
+        "user": "",
+        "host": "",
+        "table": ""
     },
     "sensors": [
         {
-            "name": "temp",
-            "pin": 1
+            "name": "",
+            "pin": 0
         }
     ]
 }
