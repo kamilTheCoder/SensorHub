@@ -32,8 +32,8 @@ class Station:
 
         query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbTableName)
         val = (
-            "'{0}-{1:02d}-{2:02d}'".format(time.year, time.month, time.day),
-            "'{0:02d}:{1:02d}:{2:02d}'".format(time.hour, time.minute, time.second),
+            "{0}-{1:02d}-{2:02d}".format(time.year, time.month, time.day),
+            "{0:02d}:{1:02d}:{2:02d}".format(time.hour, time.minute, time.second),
             "main",
             temp,
             hum
