@@ -15,6 +15,9 @@ class Station:
 
     def registerReading(self):
         time, temp, hum = self.tryRead()
+        if time is None or temp is None or hum is None:
+            # invalid reading - skip
+            return None
 
         db = mysql.connector.connect(
             host=self.__dbConfig.getDbHost(),
