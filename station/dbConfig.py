@@ -4,7 +4,7 @@ class DbConfig:
         self.__dbPass = "password"
         self.__dbHost = host
         self.__dbName = name
-        self.__dbTableName = host
+        self.__dbTableName = table
 
     
     def getDbName(self): 
