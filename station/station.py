@@ -69,8 +69,18 @@ class Station:
         return dbConfig, sensors
 
 
+    def __readSensor(self,i):
+        if len(self.__sensors) < i+1:
+            print("WARNING: Trying to access sensor #{}, which does not exist".format(i))
+            return None
+
+        return self.__sensors[i].read()
+
+
     def registerReading(self):
-        time, temp, hum = self.__tryRead()
+        time, reading = self.tryRead(self.__DHT11)
+        temp, hum = reading[0], reading[1]
+
         if time is None or temp is None or hum is None:
             # invalid reading - skip
             return None
@@ -98,14 +108,6 @@ class Station:
             print("\tname: {}\tpin: {}".format(s.name, s.gpio))
 
 
-    def readSensor(self,i):
-        if len(self.__sensors) < i+1:
-            print("WARNING: Trying to access sensor #{}, which does not exist".format(i))
-            return None
-
-        return self.__sensors[i].read()
-
-
     def readAllSensors(self):
         reads = []
         for s in self.__sensors:
@@ -114,17 +116,13 @@ class Station:
         return reads
 
 
-    def readDht11(self):
-        return self.__sensors[self.__DHT11].read()
-    
-
-    def __tryRead(self):
+    def tryRead(self, sensor):
         retries = 0
         maxRetries = 10
         result = None
         now = None
         while retries < maxRetries:        
-            result = self.readDht11()
+            result = self.__readSensor(sensor)
             now = datetime.datetime.now()
 
             if result != None and result.is_valid():  
