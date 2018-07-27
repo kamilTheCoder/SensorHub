@@ -97,7 +97,7 @@ class Station:
             host=self.__dbConfig.getDbHost(),
             user=self.__dbConfig.getDbUser(),
             passwd=self.__dbConfig.getDbPass(),
-            database=self.__dbConfig.getDbTable()
+            database=self.__dbConfig.getDbName()
             )
         cursor = db.cursor()
 
