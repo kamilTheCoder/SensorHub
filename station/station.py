@@ -132,8 +132,8 @@ class Station:
             retries += 1
 
         if retries == maxRetries:
-            print("Error: Finished reading after {} failed retries".format(retries))
-            return now, None, None
+            print("\tError: Finished reading after {} failed retries".format(retries))
+            return now, None
 
         return now, result
 
