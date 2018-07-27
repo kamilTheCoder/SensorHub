@@ -78,6 +78,13 @@ class Station:
         return self.__sensors[i].read()
 
 
+    def printConfig(self):
+        print("configuration:")
+        print("sensors:")
+        for s in self.__sensors:
+            print("\tname: {}\tpin: {}".format(s.name, s.gpio))
+
+
     def registerReading(self):
         time, reading = self.tryRead(self.__DHT11)
         temp, hum = reading[0], reading[1]
@@ -100,13 +107,6 @@ class Station:
         cursor.execute(query, val)
         db.commit()        
         return val
-
-
-    def printConfig(self):
-        print("configuration:")
-        print("sensors:")
-        for s in self.__sensors:
-            print("\tname: {}\tpin: {}".format(s.name, s.gpio))
 
 
     def readAllSensors(self):
