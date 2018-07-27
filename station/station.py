@@ -135,6 +135,29 @@ class Station:
         return now, result.temperature, result.humidity
 
 
+    def initReadings(self):
+        readInterval = 60 # seconds
+        repeatLimit = 10
+        repeat = 0
+
+        print("Attempting to read...")
+        while repeat < repeatLimit:        
+            result = self.registerReading()
+
+            if result is None:
+                print("\tInvalid reading, continue")
+                repeat += 1
+                continue
+
+            repeat = 0   
+            print("\tTimestamp: {} {}\tTemperature: {}C\tHumidity: {}%".format(
+                result[0], result[1], result[3], result[4]
+            ))
+
+            time.sleep(readInterval)
+
+        print("\tERROR: stopped reading after {} failed attempts".format(repeatLimit))
+
 
 class __DbConfig:
     def __init__(self, name, user, host, table):
