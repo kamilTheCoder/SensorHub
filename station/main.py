@@ -5,6 +5,9 @@ import time
 def main():
     s = station.Station()
     s.printConfig()
+    initReadings(s)
+    
+def initReadings(s):
     readInterval = 60 # seconds
     repeatLimit = 10
     repeat = 0
