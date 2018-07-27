@@ -11,7 +11,7 @@ class DbConfig:
         return self.__dbName
 
     def getDbUser(self): 
-        return self.__dbName
+        return self.__dbUser
 
     def getDbPass(self): 
         return self.__dbPass
