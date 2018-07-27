@@ -87,11 +87,11 @@ class Station:
 
     def registerReading(self):
         time, reading = self.tryRead(self.__DHT11)
-        temp, hum = reading.temperature, reading.humidity
-
-        if time is None or temp is None or hum is None:
+        if time is None or reading is None:
             # invalid reading - skip
             return None
+
+        temp, hum = reading.temperature, reading.humidity
 
         db = mysql.connector.connect(
             host=self.__dbConfig.getDbHost(),
