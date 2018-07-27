@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import sensor.sensor as sensors
+from dbConfig import DbConfig
 import json
 import mysql.connector
 import datetime
@@ -58,7 +59,7 @@ class Station:
         dbHost = config['database']['host']
         dbTable = config['database']['table']
 
-        dbConfig = __DbConfig(dbName, dbUSer, dbHost, dbTable)
+        dbConfig = DbConfig(dbName, dbUSer, dbHost, dbTable)
 
         sensors = []
         for sensor in config['sensors']:
@@ -159,28 +160,3 @@ class Station:
             time.sleep(readInterval)
 
         print("\tERROR: stopped reading after {} failed attempts".format(repeatLimit))
-
-
-class __DbConfig:
-    def __init__(self, name, user, host, table):
-        self.__dbUser = user
-        self.__dbPass = "password"
-        self.__dbHost = host
-        self.__dbName = name
-        self.__dbTableName = host
-
-    
-    def getDbName(self): 
-        return self.__dbName
-
-    def getDbUser(self): 
-        return self.__dbName
-
-    def getDbPass(self): 
-        return self.__dbPass
-
-    def getDbTable(self): 
-        return self.__dbTableName
-
-    def getDbHost(self): 
-        return self.__dbHost
