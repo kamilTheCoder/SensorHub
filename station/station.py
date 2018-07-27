@@ -40,10 +40,8 @@ class Station:
         )
 
         cursor.execute(query, val)
-        db.commit()
-        
-        return cursor.lastrowid, val
-
+        db.commit()        
+        return val
 
 
     def __loadConfig(self):

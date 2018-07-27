@@ -9,10 +9,10 @@ def main():
 
     print("Attempting to read...")
     while True:        
-        id, result = s.registerReading()
+        result = s.registerReading()
 
-        print("\tId: {}\tTimestamp: {} {}\tTemperature: {}C\tHumidity: {}%".format(
-            id, result[0], result[1], result[3], result[4]
+        print("\tTimestamp: {} {}\tTemperature: {}C\tHumidity: {}%".format(
+            result[0], result[1], result[3], result[4]
         ))
 
         time.sleep(readInterval)
