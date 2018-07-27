@@ -14,7 +14,7 @@ class Station:
 
     def __init__(self):
         sensorList = self.__loadConfig()
-        self.sensors = self.__initSensors(sensorList)        
+        self.__sensors = self.__initSensors(sensorList)        
         self.__initGpio()
 
 
@@ -63,7 +63,7 @@ class Station:
     def printConfig(self):
         print("configuration:")
         print("sensors:")
-        for s in self.sensors:
+        for s in self.__sensors:
             print("\tname: {}\tpin: {}".format(s.name, s.gpio))
 
 
@@ -88,23 +88,23 @@ class Station:
 
 
     def readSensor(self,i):
-        if len(self.sensors) < i+1:
+        if len(self.__sensors) < i+1:
             print("WARNING: Trying to access sensor #{}, which does not exist".format(i))
             return None
 
-        return self.sensors[i].read()
+        return self.__sensors[i].read()
 
 
     def readAllSensors(self):
         reads = []
-        for s in self.sensors:
+        for s in self.__sensors:
             reads.append(s.read())
 
         return reads
 
 
     def readDht11(self):
-        for s in self.sensors:
+        for s in self.__sensors:
             if isinstance(s, sensors.Dht11Sensor):
                 return s.read()
     
