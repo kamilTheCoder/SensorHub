@@ -14,28 +14,28 @@ class LightControl:
         if initialize:
             GPIO.setmode(GPIO.BCM)
             GPIO.setwarnings(False)
-            
+
         GPIO.setup(self.__red, GPIO.OUT)
         GPIO.setup(self.__green, GPIO.OUT)
         GPIO.setup(self.__blue, GPIO.OUT)
 
 
-    def __flashLed(self, led, time):
+    def __flashLed(self, led, timer):
         GPIO.output(led, GPIO.HIGH)
-        time.sleep(1)
+        time.sleep(timer)
         GPIO.output(led, GPIO.LOW)
 
 
-    def flashRed(self, time = 1):
-        self.__flashLed(self.__red, time)
+    def flashRed(self, timer = 1):
+        self.__flashLed(self.__red, timer)
 
-    def flashGreen(self, time = 1):
-        self.__flashLed(self.__green, time)
+    def flashGreen(self, timer = 1):
+        self.__flashLed(self.__green, timer)
 
-    def flashBlue(self, time = 1):
-        self.__flashLed(self.__blue, time)
+    def flashBlue(self, timer = 1):
+        self.__flashLed(self.__blue, timer)
 
-    def flashRgb(self, time = 1):
-        self.__flashLed(self.__red, time)
-        self.__flashLed(self.__green, time)
-        self.__flashLed(self.__blue, time)
+    def flashRgb(self, timer = 1):
+        self.__flashLed(self.__red, timer)
+        self.__flashLed(self.__green, timer)
+        self.__flashLed(self.__blue, timer)
