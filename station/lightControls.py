@@ -14,6 +14,10 @@ class LightControl:
         if initialize:
             GPIO.setmode(GPIO.BCM)
             GPIO.setwarnings(False)
+            
+        GPIO.setup(self.__red, GPIO.OUT)
+        GPIO.setup(self.__green, GPIO.OUT)
+        GPIO.setup(self.__blue, GPIO.OUT)
 
 
     def __flashLed(self, led, time):
