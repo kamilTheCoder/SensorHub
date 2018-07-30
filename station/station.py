@@ -5,21 +5,25 @@ import json
 import mysql.connector
 import datetime
 import time
+from lightControls import LightControl
 
 class Station:
     __dbConfig = None
     __DHT11 = None
     __sensors = []
     __readInterval = None
+    __rgbLed = None
 
     def __init__(self):
         self.__dbConfig, self.__readInterval, sensorList = self.__loadConfig()
         self.__sensors = self.__initSensors(sensorList)        
         self.__initGpio()
+        self.__rgbLed = LightControl(40, 38, 36)
 
 
     def __initGpio(self):
         print("Initialising GPIO...")
+        self.__rgbLed.flashRgb()
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.cleanup()
@@ -107,7 +111,7 @@ class Station:
         val = self.__formatReadings(time, temp, hum)
 
         cursor.execute(query, val)
-        db.commit()        
+        db.commit() 
         return val
 
 
@@ -117,7 +121,7 @@ class Station:
             reads.append(s.read())
 
         return reads
-
+            
 
     def tryRead(self, sensor):
         retries = 0
@@ -128,13 +132,15 @@ class Station:
             result = self.__readSensor(sensor)
             now = datetime.datetime.now()
 
-            if result != None and result.is_valid():  
+            if result != None and result.is_valid():
+                self.__rgbLed.flashGreen(3)  
                 break
             
             retries += 1
 
         if retries == maxRetries:
             print("\tError: Finished reading after {} failed retries".format(retries))
+            self.__rgbLed.flashRed(3)
             return now, None
 
         return now, result
