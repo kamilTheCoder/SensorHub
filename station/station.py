@@ -19,11 +19,11 @@ class Station:
         self.__sensors = self.__initSensors(sensorList)        
         self.__initGpio()
         self.__rgbLed = LightControl(40, 38, 36)
+        self.__rgbLed.flashRgb()
 
 
     def __initGpio(self):
-        print("Initialising GPIO...")
-        self.__rgbLed.flashRgb()
+        print("Initialising GPIO...")        
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.cleanup()
