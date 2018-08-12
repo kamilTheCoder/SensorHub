@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import sensor.sensor as Sensors
+import SensorHub.sensor.sensor as Sensors
 from dbConfig import DbConfig
 import json
 import mysql.connector
