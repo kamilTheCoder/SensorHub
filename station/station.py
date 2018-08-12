@@ -136,7 +136,6 @@ class Station:
         result = None
         now = None
         while retries < maxRetries:       
-            self.__rgbLed.flashBlue() 
             result = self.__readSensor(sensor)
             now = datetime.datetime.now()
 
