@@ -2,7 +2,8 @@
     "station": {
         "ip": "",
         "name": "",
-        "readInterval": 0
+        "readInterval": 0,
+        "saveToDb": false
     },
     "database": {
         "name": "",
