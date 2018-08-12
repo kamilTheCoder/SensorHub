@@ -24,3 +24,13 @@ class Dht11Sensor(Sensor):
     def read(self):
         return self.instance.read()
 
+class LDR(Sensor):
+    # instance = None
+
+    def __init__(self, gpio):
+        super().__init__(gpio, 'LDR')
+        print("Instanciating LDR...")
+        
+    def read(self):
+        print("pretending to read the photosensor...")
+        return 0

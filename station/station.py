@@ -10,6 +10,7 @@ from lightControls import LightControl
 class Station:
     __dbConfig = None
     __DHT11 = None
+    __photo = None
     __sensors = []
     __readInterval = None
     __rgbLed = None
@@ -39,6 +40,11 @@ class Station:
                 print("\tFound DHT11 at pin {}".format(sensorConf[1]))
                 result.append(Sensors.Dht11Sensor(sensorConf[1]))
                 self.__DHT11 = i
+                i += 1
+            if sensorConf[0] == 'LDR': 
+                print("\tFound LDR at pin {}".format(sensorConf[1]))
+                result.append(Sensors.LDR(sensorConf[1]))
+                self.__photo = i
                 i += 1
             else:
                 print("\tWARNING: Unknown sensor {}".format( sensorConf[0]))
