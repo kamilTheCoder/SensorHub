@@ -13,12 +13,13 @@ class Station:
     __sensors = []
     __readInterval = None
     __rgbLed = None
+    __saveToDb = False
 
     def __init__(self):
-        self.__dbConfig, self.__readInterval, sensorList = self.__loadConfig()
+        self.__dbConfig, self.__readInterval, self.__saveToDb, sensorList = self.__loadConfig()
         self.__sensors = self.__initSensors(sensorList)        
         self.__initGpio()
-        self.__rgbLed = LightControl(40, 38, 36)
+        self.__rgbLed = LightControl(26,19,13)
         self.__rgbLed.flashRgb()
 
 
@@ -65,6 +66,7 @@ class Station:
         dbTable = config['database']['table']
         dbConfig = DbConfig(dbName, dbUSer, dbHost, dbTable)
 
+        saveToDb = config['station']['saveToDb']
         readInterval = config['station']['readInterval']
 
         sensors = []
@@ -73,7 +75,7 @@ class Station:
             pin = sensor['pin']
             sensors.append((name, pin))
 
-        return dbConfig, readInterval, sensors
+        return dbConfig, readInterval, saveToDb, sensors
 
 
     def __readSensor(self,i):
@@ -91,14 +93,7 @@ class Station:
             print("\tname: {}\tpin: {}".format(s.name, s.gpio))
 
 
-    def registerReading(self):
-        time, reading = self.tryRead(self.__DHT11)
-        if time is None or reading is None:
-            # invalid reading - skip
-            return None
-
-        temp, hum = reading.temperature, reading.humidity
-
+    def __saveReadingToDb(self, val):
         db = mysql.connector.connect(
             host=self.__dbConfig.getDbHost(),
             user=self.__dbConfig.getDbUser(),
@@ -108,10 +103,22 @@ class Station:
         cursor = db.cursor()
 
         query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbConfig.getDbTable())
-        val = self.__formatReadings(time, temp, hum)
-
         cursor.execute(query, val)
         db.commit() 
+
+
+    def registerReading(self):
+        time, reading = self.tryRead(self.__DHT11)
+        if time is None or reading is None:
+            # invalid reading - skip
+            return None
+
+        temp, hum = reading.temperature, reading.humidity
+        val = self.__formatReadings(time, temp, hum)
+
+        if self.__saveToDb:
+            self.__saveReadingToDb(val)
+        
         return val
 
 
