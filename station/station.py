@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-import sensor.sensor as sensors
+import sensor.sensor as Sensors
 from dbConfig import DbConfig
 import json
 import mysql.connector
@@ -37,7 +37,7 @@ class Station:
         for sensorConf in sensorList:
             if sensorConf[0] == 'DHT11': 
                 print("\tFound DHT11 at pin {}".format(sensorConf[1]))
-                result.append(sensors.Dht11Sensor(sensorConf[1]))
+                result.append(Sensors.Dht11Sensor(sensorConf[1]))
                 self.__DHT11 = i
                 i += 1
             else:
