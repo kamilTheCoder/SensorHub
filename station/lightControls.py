@@ -26,16 +26,16 @@ class LightControl:
         GPIO.output(led, GPIO.LOW)
 
 
-    def flashRed(self, timer = 1):
+    def flashRed(self, timer = 0.01):
         self.__flashLed(self.__red, timer)
 
-    def flashGreen(self, timer = 1):
+    def flashGreen(self, timer = 0.01):
         self.__flashLed(self.__green, timer)
 
-    def flashBlue(self, timer = 1):
+    def flashBlue(self, timer = 0.01):
         self.__flashLed(self.__blue, timer)
 
-    def flashRgb(self, timer = 1):
+    def flashRgb(self, timer = 0.01):
         self.__flashLed(self.__red, timer)
         self.__flashLed(self.__green, timer)
         self.__flashLed(self.__blue, timer)
