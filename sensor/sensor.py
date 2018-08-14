@@ -22,7 +22,7 @@ class Dht11Sensor(Sensor):
     def __init__(self, gpio):
         super().__init__(gpio, 'DHT11')
         print("Instanciating DHT11...")
-        self.instance = dht11.DHT11(pin=self.__gpio)
+        self.instance = dht11.DHT11(pin=gpio)
 
     def read(self):
         return self.instance.read()
