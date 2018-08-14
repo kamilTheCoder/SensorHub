@@ -25,7 +25,6 @@ class Dht11Sensor(Sensor):
         return self.instance.read()
 
 class LDR(Sensor):
-    # instance = None
 
     def __init__(self, gpio):
         super().__init__(gpio, 'LDR')
@@ -35,3 +34,13 @@ class LDR(Sensor):
     def read(self):
         print("pretending to read the photosensor...")
         return 0
+
+class SoundSensor(Sensor):
+
+    def __init__(self, gpio):
+        super().__init__(gpio, 'SOUND')
+        print("Instanciating Sound Sensor...")
+        GPIO.setup(gpio,GPIO.IN)
+        
+    def read(self):
+        return GPIO.input(self.gpio) == GPIO.LOW
