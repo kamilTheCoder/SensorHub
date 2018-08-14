@@ -39,7 +39,7 @@ class LDR(Sensor):
 class LM393Sound(Sensor):
 
     def __init__(self, gpio):
-        super().__init__(gpio, 'SOUND')
+        super().__init__(gpio, 'LM393Sound')
         GPIO.setup(gpio,GPIO.IN)
         
     def read(self):
