@@ -30,6 +30,7 @@ class LDR(Sensor):
     def __init__(self, gpio):
         super().__init__(gpio, 'LDR')
         print("Instanciating LDR...")
+        GPIO.setup(gpio,GPIO.IN)
         
     def read(self):
         print("pretending to read the photosensor...")
