@@ -11,6 +11,7 @@ class Station:
     __dbConfig = None
     __DHT11 = None
     __photo = None
+    __LM393Sound = None
     __sensors = []
     __readInterval = None
     __rgbLed = None
@@ -41,10 +42,15 @@ class Station:
                 result.append(Sensors.Dht11Sensor(sensorConf[1]))
                 self.__DHT11 = i
                 i += 1
-            if sensorConf[0] == 'LDR': 
+            elif sensorConf[0] == 'LDR': 
                 print("\tFound LDR at pin {}".format(sensorConf[1]))
                 result.append(Sensors.LDR(sensorConf[1]))
                 self.__photo = i
+                i += 1
+            elif sensorConf[0] == 'LM393Sound': 
+                print("\tFound LM393 Sound at pin {}".format(sensorConf[1]))
+                result.append(Sensors.LM393Sound(sensorConf[1]))
+                self.__LM393Sound = i
                 i += 1
             else:
                 print("\tWARNING: Unknown sensor {}".format( sensorConf[0]))

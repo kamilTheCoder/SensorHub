@@ -38,11 +38,11 @@ class LDR(Sensor):
         print("pretending to read the photosensor...")
         return 0
 
-class SoundSensor(Sensor):
+class LM393Sound(Sensor):
 
     def __init__(self, gpio):
         super().__init__(gpio, 'SOUND')
-        print("Instanciating Sound Sensor...")
+        print("Instanciating LM393 Sound Sensor...")
         GPIO.setup(gpio,GPIO.IN)
         
     def read(self):
