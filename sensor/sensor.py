@@ -21,7 +21,6 @@ class Dht11Sensor(Sensor):
 
     def __init__(self, gpio):
         super().__init__(gpio, 'DHT11')
-        print("Instanciating DHT11...")
         self.instance = dht11.DHT11(pin=gpio)
 
     def read(self):
@@ -31,7 +30,6 @@ class LDR(Sensor):
 
     def __init__(self, gpio):
         super().__init__(gpio, 'LDR')
-        print("Instanciating LDR...")
         GPIO.setup(gpio,GPIO.IN)
         
     def read(self):
@@ -42,7 +40,6 @@ class LM393Sound(Sensor):
 
     def __init__(self, gpio):
         super().__init__(gpio, 'SOUND')
-        print("Instanciating LM393 Sound Sensor...")
         GPIO.setup(gpio,GPIO.IN)
         
     def read(self):
