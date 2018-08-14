@@ -194,11 +194,19 @@ class Station:
 
     def __testRgbLed(self):
         print("Testing RGB LEDs...")
+        if self.__rgbLed is None:
+            print("Error: RGB LED not configured.")
+            return
+
         while 1:
             self.__rgbLed.flashRgb(1)
 
     def __testDHT11(self):
         print("Testing DHT11...")
+        if self.__DHT11 is None:
+            print("Error: DHT11 not configured.")
+            return
+
         while 1:
             time.sleep(0.5)
             print(self.__testReadDHT11())
