@@ -54,6 +54,7 @@ class Station:
                 i += 1
             else:
                 print("\tWARNING: Unknown sensor {}".format( sensorConf[0]))
+                i += 1
 
         return result
 
