@@ -181,3 +181,36 @@ class Station:
             time.sleep(self.__readInterval)
 
         print("\tERROR: stopped reading after {} failed attempts".format(repeatLimit))
+
+
+    def testSensor(self, s):
+        if s == "temp" or s == "hum":
+            self.__testDHT11()
+        if s == "rgb":
+            self.__testRgbLed()
+        else:
+            print("Error: Unkown sensor")
+
+
+    def __testRgbLed(self):
+        print("Testing RGB LEDs...")
+        while 1:
+            self.__rgbLed.flashRgb(1)
+
+    def __testDHT11(self):
+        print("Testing DHT11...")
+        while 1:
+            time.sleep(0.5)
+            print(self.__testReadDHT11())
+
+    
+    def __testReadDHT11(self):
+        reading = self.__readSensor(self.__DHT11)
+            
+        if reading.temperature == 0:
+            reading.temperature = "???"
+            
+        if reading.humidity == 0:
+            reading.humidity = "???"
+        
+        return "\tT: {}\tH: {}".format(reading.temperature, reading.humidity)
