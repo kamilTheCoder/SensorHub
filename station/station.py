@@ -19,8 +19,8 @@ class Station:
 
     def __init__(self):
         self.__dbConfig, self.__readInterval, self.__saveToDb, sensorList = self.__loadConfig()
-        self.__sensors = self.__initSensors(sensorList)        
         self.__initGpio()
+        self.__sensors = self.__initSensors(sensorList)
         self.__rgbLed = LightControl(26,19,13)
         self.__rgbLed.flashRgb()
 
@@ -210,6 +210,7 @@ class Station:
         while 1:
             self.__rgbLed.flashRgb(1)
             time.sleep(1)
+
 
     def __testDHT11(self):
         print("Testing DHT11...")
