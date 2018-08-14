@@ -96,7 +96,8 @@ class Station:
         print("configuration:")
         print("sensors:")
         for s in self.__sensors:
-            print("\tname: {}\tpin: {}".format(s.name, s.gpio))
+            name,gpio = s.getInfo()
+            print("\tname: {}\tpin: {}".format(name, gpio))
 
 
     def __saveReadingToDb(self, val):
