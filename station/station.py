@@ -228,3 +228,20 @@ class Station:
             reading.humidity = "???"
         
         return "\tT: {}\tH: {}".format(reading.temperature, reading.humidity)
+
+
+    def __testLM393Sound(self):
+        print("Testing LM393 Sound sensor...")
+        if self.__LM393Sound is None:
+            print("Error: LM393 Sound sensor not configured.")
+            return
+
+        while 1:
+            time.sleep(0.5)
+            print(self.__testReadLM393Sound())
+
+    
+    def __testReadLM393Sound(self):
+        reading = self.__readSensor(self.__LM393Sound)
+        
+        return "\tS: {}".format(reading)
