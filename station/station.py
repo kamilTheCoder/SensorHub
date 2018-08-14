@@ -208,6 +208,7 @@ class Station:
 
         while 1:
             self.__rgbLed.flashRgb(1)
+            time.sleep(1)
 
     def __testDHT11(self):
         print("Testing DHT11...")
