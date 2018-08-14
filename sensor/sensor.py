@@ -2,15 +2,18 @@ import RPi.GPIO as GPIO
 import DHT11_Python_master.dht11 as dht11
 
 class Sensor:
+    __gpio = None
+    __name = None
+
     def __init__(self, gpio, name):
-        self.gpio = gpio
-        self.name = name
+        self.__gpio = gpio
+        self.__name = name
     
     def read(self):
         return None
 
     def getInfo(self):
-        return (self.name, self.gpio)
+        return (self.__name, self.__gpio)
 
 
 class Dht11Sensor(Sensor):
@@ -19,7 +22,7 @@ class Dht11Sensor(Sensor):
     def __init__(self, gpio):
         super().__init__(gpio, 'DHT11')
         print("Instanciating DHT11...")
-        self.instance = dht11.DHT11(pin=self.gpio)
+        self.instance = dht11.DHT11(pin=self.__gpio)
 
     def read(self):
         return self.instance.read()
@@ -43,4 +46,4 @@ class SoundSensor(Sensor):
         GPIO.setup(gpio,GPIO.IN)
         
     def read(self):
-        return GPIO.input(self.gpio) == GPIO.LOW
+        return GPIO.input(self.__gpio) == GPIO.LOW
