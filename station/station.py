@@ -194,6 +194,8 @@ class Station:
             self.__testDHT11()
         if s == "rgb":
             self.__testRgbLed()
+        if s == "sound":
+            self.__testLM393Sound()
         else:
             print("Error: Unkown sensor")
 
