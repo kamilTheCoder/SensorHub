@@ -47,5 +47,4 @@ class LM393Sound(Sensor):
         for _ in range(0,100):
             readings.append(GPIO.input(self._gpio) == GPIO.LOW)
 
-        reading = True in readings
-        return 
+        return True in readings
