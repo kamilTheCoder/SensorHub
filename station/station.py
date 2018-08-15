@@ -190,14 +190,16 @@ class Station:
 
 
     def testSensor(self, s):
-        if s == "temp" or s == "hum":
+        if s == "all":
+            self.__testAll()
+        elif s == "temp" or s == "hum":
             self.__testDHT11()
-        if s == "rgb":
+        elif s == "rgb":
             self.__testRgbLed()
-        if s == "sound":
+        elif s == "sound":
             self.__testLM393Sound()
         else:
-            print("Error: Unkown sensor")
+            print("Error: Unknown sensor")
 
 
     def __testRgbLed(self):
@@ -248,3 +250,15 @@ class Station:
         reading = self.__readSensor(self.__LM393Sound)
         
         return "\tS: {}".format(reading)
+
+    def __testAll(self):
+        print("Testing all sensors...")
+
+        while 1:
+            result = ""
+            if self.__DHT11 is not None:
+                result += self.__testReadDHT11()
+            if self.__LM393Sound is not None:
+                result += self.__testReadLM393Sound()
+
+            print(result)
