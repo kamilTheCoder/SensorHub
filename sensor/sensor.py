@@ -37,14 +37,17 @@ class LDR(Sensor):
         return 0
 
 class LM393Sound(Sensor):
+    __sampleSize = None
 
-    def __init__(self, gpio):
+    def __init__(self, gpio, sample=500000):
         super().__init__(gpio, 'LM393Sound')
         GPIO.setup(gpio,GPIO.IN)
+        self.__sampleSize = sample
         
     def read(self):
-        readings = []
-        for _ in range(0,100):
-            readings.append(GPIO.input(self._gpio) == GPIO.LOW)
+        noise = 0
+        for _ in range(0,self.__sampleSize):
+            if GPIO.input(self._gpio) == GPIO.LOW:
+                noise += 1
 
-        return True in readings
+        return noise
