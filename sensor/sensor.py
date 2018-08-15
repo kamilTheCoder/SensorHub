@@ -50,4 +50,4 @@ class LM393Sound(Sensor):
             if GPIO.input(self._gpio) == GPIO.LOW:
                 noise += 1
 
-        return noise
+        return noise / self.__sampleSize * 100000
