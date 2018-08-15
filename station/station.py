@@ -153,7 +153,10 @@ class Station:
         result = None
         while retries < maxRetries:       
             result = self.__readSensor(sensor)
-            if result != None and result.is_valid():
+            if result != None:
+                if sensor == self.__DHT11 and result.is_valid():
+                    self.__rgbLed.flashGreen()                
+                    break
                 self.__rgbLed.flashGreen()                
                 break
             
@@ -181,8 +184,8 @@ class Station:
                 continue
 
             repeat = 0   
-            print("\tTimestamp: {} {}\tTemperature: {}C\tHumidity: {}%".format(
-                result[0], result[1], result[3], result[4]
+            print("\tTime: {} {}\tTemp: {}C\tHum: {}%\tSound: {}".format(
+                result[0], result[1], result[3], result[4], result[5]
             ))
 
             time.sleep(self.__readInterval)
