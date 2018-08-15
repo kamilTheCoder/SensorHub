@@ -241,7 +241,6 @@ class Station:
             return
 
         while 1:
-            time.sleep(0.5)
             print(self.__testReadLM393Sound())
 
     
