@@ -58,12 +58,13 @@ class Station:
         return result
 
 
-    def __formatReadings(self, time, temp, hum):
+    def __formatReadings(self, time, temp, hum, sound):
         return ("{0}-{1:02d}-{2:02d}".format(time.year, time.month, time.day),
                 "{0:02d}:{1:02d}:{2:02d}".format(time.hour, time.minute, time.second),
                 "main",
                 temp,
-                hum
+                hum,
+                sound
             )
 
 
@@ -115,19 +116,22 @@ class Station:
             )
         cursor = db.cursor()
 
-        query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s)".format(self.__dbConfig.getDbTable())
+        query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s, %s)".format(self.__dbConfig.getDbTable())
         cursor.execute(query, val)
         db.commit() 
 
 
     def registerReading(self):
-        time, reading = self.tryRead(self.__DHT11)
-        if time is None or reading is None:
-            # invalid reading - skip
-            return None
-
+        reading = self.tryRead(self.__DHT11)
         temp, hum = reading.temperature, reading.humidity
-        val = self.__formatReadings(time, temp, hum)
+        sound = self.tryRead(self.__LM393Sound)
+        now = datetime.datetime.now()
+
+        if reading is None and sound is None:
+            # invalid reading - skip
+            return None  
+
+        val = self.__formatReadings(now, temp, hum, sound)
 
         if self.__saveToDb:
             self.__saveReadingToDb(val)
@@ -147,11 +151,8 @@ class Station:
         retries = 0
         maxRetries = 10
         result = None
-        now = None
         while retries < maxRetries:       
             result = self.__readSensor(sensor)
-            now = datetime.datetime.now()
-
             if result != None and result.is_valid():
                 self.__rgbLed.flashGreen()                
                 break
@@ -161,9 +162,9 @@ class Station:
         if retries == maxRetries:
             print("\tError: Finished reading after {} failed retries".format(retries))
             self.__rgbLed.flashRed(1)
-            return now, None
+            return None
 
-        return now, result
+        return result
 
 
     def initReadings(self):
