@@ -1,4 +1,4 @@
-import station
+from station import station
 import datetime
 import time
 import sys

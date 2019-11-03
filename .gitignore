@@ -2,3 +2,5 @@
 *config.json
 *dht11.py
 .vscode/*
+DHT*/*
+RPi/*

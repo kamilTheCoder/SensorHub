@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
 import SensorHub.sensor.sensor as Sensors
+import interface.db as dbi
 from dbConfig import DbConfig
 import json
-import mysql.connector
 import datetime
 import time
 from lightControls import LightControl
@@ -107,20 +107,6 @@ class Station:
             print("\tname: {}\tpin: {}".format(name, gpio))
 
 
-    def __saveReadingToDb(self, val):
-        db = mysql.connector.connect(
-            host=self.__dbConfig.getDbHost(),
-            user=self.__dbConfig.getDbUser(),
-            passwd=self.__dbConfig.getDbPass(),
-            database=self.__dbConfig.getDbName()
-            )
-        cursor = db.cursor()
-
-        query = "INSERT INTO {} VALUES (%s, %s, %s, %s, %s, %s)".format(self.__dbConfig.getDbTable())
-        cursor.execute(query, val)
-        db.commit() 
-
-
     def registerReading(self):
         reading = self.tryRead(self.__DHT11)
         temp, hum = reading.temperature, reading.humidity
@@ -134,7 +120,7 @@ class Station:
         val = self.__formatReadings(now, temp, hum, sound)
 
         if self.__saveToDb:
-            self.__saveReadingToDb(val)
+            dbi.SaveReadingToDb(val)
         
         return val
 
@@ -169,25 +155,25 @@ class Station:
 
         return result
 
+    def __isReadingValid(self, result):
+        return result[3] != 0 or result[4] != 0 or result[0] != 0
+
 
     def initReadings(self):
         repeatLimit = 10
         repeat = 0
 
         print("Attempting to read...")
-        while repeat < repeatLimit:        
+        while repeat < repeatLimit :        
             result = self.registerReading()
 
-            if result is None:
+            if result is None or self.__isReadingValid(result):
                 print("\tInvalid reading, continue")
                 repeat += 1
                 continue
 
             repeat = 0   
-            print("\tTime: {} {}\tTemp: {}C\tHum: {}%\tSound: {}".format(
-                result[0], result[1], result[3], result[4], result[5]
-            ))
-
+            dbi.PrintReadings(result)
             time.sleep(self.__readInterval)
 
         print("\tERROR: stopped reading after {} failed attempts".format(repeatLimit))
