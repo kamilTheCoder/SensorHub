@@ -10,7 +10,7 @@ def main():
     if len(sys.argv) < 2:
         s.initReadings()
     else:
-        s.testSensor(sys.argv[1])
+        s.testSensor(sys.argv[1]) 
     
     
 if __name__ == '__main__':

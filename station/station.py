@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import SensorHub.sensor.sensor as Sensors
-import interface.db as dbi
+import SensorHub.interface.db as dbi
 from dbConfig import DbConfig
 import json
 import datetime
@@ -146,6 +146,7 @@ class Station:
                 self.__rgbLed.flashGreen()                
                 break
             
+            self.__rgbLed.flashRed()
             retries += 1
 
         if retries == maxRetries:
@@ -156,7 +157,7 @@ class Station:
         return result
 
     def __isReadingValid(self, result):
-        return result[3] != 0 or result[4] != 0 or result[0] != 0
+        return result[3] != 0 or result[4] != 0 or result[5] != 0
 
 
     def initReadings(self):
@@ -167,8 +168,8 @@ class Station:
         while repeat < repeatLimit :        
             result = self.registerReading()
 
-            if result is None or self.__isReadingValid(result):
-                print("\tInvalid reading, continue")
+            if result is None or not self.__isReadingValid(result):
+                # print("\tInvalid reading, continue")
                 repeat += 1
                 continue
 
